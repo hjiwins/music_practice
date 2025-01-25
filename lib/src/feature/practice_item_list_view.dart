@@ -28,7 +28,9 @@ class _PracticeItemListViewState extends State<PracticeItemListView> {
             icon: const Icon(Icons.add),
             onPressed: () {
               Navigator.restorablePushNamed(
-                  context, PracticeItemAddView.routeName);
+                context,
+                PracticeItemAddView.routeName,
+              );
             },
           ),
           IconButton(
@@ -69,6 +71,7 @@ class _PracticeItemListViewState extends State<PracticeItemListView> {
                     Navigator.restorablePushNamed(
                       context,
                       SampleItemDetailsView.routeName,
+                      arguments: {'id': item?.id}
                     );
                   },
                 );

@@ -1,18 +1,19 @@
-/// A placeholder class that represents an entity or model.
+import 'package:music_practice/src/feature/piece_item.dart';
+
 class PracticeItem {
-  const PracticeItem(this.id, this.title, this.duration, this.count);
+  const PracticeItem(this.id, this.title, this.date, this.pieces);
 
   final int id;
   final String title;
-  final int duration;
-  final int count;
+  final DateTime date;
+  final List<PieceItem> pieces;
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'title': title,
-      'duration': duration,
-      'count': count,
+      'date': date,
+      'pieces': pieces,
     };
   }
 }

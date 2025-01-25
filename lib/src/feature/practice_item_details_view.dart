@@ -26,7 +26,7 @@ class _SampleItemDetailsViewState extends State<SampleItemDetailsView> {
         builder: (context, snapshot) {
           return Center(
             child: snapshot.hasData
-                ? Text('${snapshot.data?.count}')
+                ? Text('${snapshot.data?.date}')
                 : const CircularProgressIndicator(),
           );
         },

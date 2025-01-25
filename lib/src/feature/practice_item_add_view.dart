@@ -1,76 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:music_practice/src/components/piece_item_view.dart';
+import 'package:music_practice/src/feature/piece_item.dart';
 import 'package:music_practice/src/practice_preferences/practice_manager.dart';
 import 'package:music_practice/src/feature/practice_item.dart';
 
 /// Displays detailed information about a SampleItem.
-class PracticeItemAddView extends StatelessWidget {
+class PracticeItemAddView extends StatefulWidget {
   const PracticeItemAddView({super.key});
 
   static const routeName = '/practice_item_add';
 
   @override
+  State<PracticeItemAddView> createState() => _PracticeItemAddViewState();
+}
+
+class _PracticeItemAddViewState extends State<PracticeItemAddView> {
+  final practiceManager = PracticeManager();
+  final formKey = GlobalKey<FormState>();
+
+  List<PieceItem> pieceList = [];
+  int test = 0;
+
+  void add() async {
+    formKey.currentState?.save();
+
+    // if (title.isNotEmpty) {
+    //   // final task = PracticeItem(1, title, duration, count);
+    //   // await practiceManager.addPractice(task);
+    // }
+  }
+
+  void validate(String? value) {
+    print(value);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final practiceManager = PracticeManager();
-
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController durationController = TextEditingController();
-    final TextEditingController countController = TextEditingController();
-
-    void add() async {
-      final title = titleController.text;
-      final duration = int.parse(durationController.text);
-      final count = int.parse(countController.text);
-      if (title.isNotEmpty) {
-        final task = PracticeItem(1, title, duration, count);
-        await practiceManager.addPractice(task);
-        titleController.clear();
-        durationController.clear();
-        countController.clear();
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Start New Practice'),
+        actions: [
+          IconButton.filledTonal(
+            onPressed: () {
+              //Limit 10 pieces per practice
+              if (pieceList.length >= 10) return;
+              setState(() {
+                pieceList = [
+                  ...pieceList,
+                  PieceItem(pieceList.length + 1, '', 0, 1) // defalut piece item
+                ];
+              });
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Center(
           child: Form(
+            key: formKey,
             autovalidateMode: AutovalidateMode.onUnfocus,
-            child: Column(
-              children: [
-                TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Title'),
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                TextField(
-                  controller: durationController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Duration'),
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                TextField(
-                  controller: countController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Count'),
-                  ),
-                ),
-                FilledButton.tonal(
-                  onPressed: add,
-                  child: const Text('Start Practice'),
-                ),
-              ],
+            onChanged: () {},
+            child: ListView.builder(
+              itemCount: pieceList.length,
+              itemBuilder: (context, index) {
+                return PieceItemView(
+                  item: pieceList[index],
+                  onSaved: (key, value) {
+                    // TODO: update values when saved
+                    pieceList[index];
+                  },
+                );
+              },
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: FilledButton.tonal(
+        onPressed: add,
+        child: const Text('Start Practice'),
       ),
     );
   }

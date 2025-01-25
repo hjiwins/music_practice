@@ -73,6 +73,7 @@ class MyApp extends StatelessWidget {
                   case PracticeItemAddView.routeName:
                     return const PracticeItemAddView();
                   case SampleItemDetailsView.routeName:
+                    final id = routeSettings.arguments;
                     return const SampleItemDetailsView(id: 1);
                   case PracticeItemListView.routeName:
                   default:
